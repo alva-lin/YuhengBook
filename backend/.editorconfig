@@ -1,0 +1,38 @@
+###############################
+# Core EditorConfig Options   #
+###############################
+root = true
+# All files
+[*]
+indent_style = space
+
+# XML project files
+[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+# XML config files
+[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+indent_size = 2
+
+# Json files
+[*.json]
+indent_size = 2
+
+[*.cs]
+
+# Microsoft .NET properties
+csharp_new_line_before_members_in_object_initializers = false
+csharp_preferred_modifier_order = public, protected, private, internal, file, new, override, sealed, virtual, abstract, async, static, extern, unsafe, volatile, readonly, required:suggestion
+csharp_prefer_braces = true:none
+csharp_preserve_single_line_blocks = true
+
+# ReSharper properties
+resharper_csharp_blank_lines_around_single_line_invocable = 1
+resharper_csharp_empty_block_style = multiline
+resharper_csharp_remove_blank_lines_near_braces_in_code = false
+resharper_instance_members_qualify_declared_in =
+resharper_keep_existing_embedded_block_arrangement = false
+resharper_keep_existing_enum_arrangement = false
+resharper_parentheses_redundancy_style = remove
+resharper_place_simple_initializer_on_single_line = false
+resharper_wrap_object_and_collection_initializer_style = chop_always
