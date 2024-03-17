@@ -2,7 +2,8 @@ require('@testing-library/jest-dom');
 
 const { getComputedStyle } = window;
 window.getComputedStyle = (elt) => getComputedStyle(elt);
-window.HTMLElement.prototype.scrollIntoView = () => {};
+window.HTMLElement.prototype.scrollIntoView = () => {
+};
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -19,9 +20,14 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+  }
+
+  unobserve() {
+  }
+
+  disconnect() {
+  }
 }
 
 window.ResizeObserver = ResizeObserver;

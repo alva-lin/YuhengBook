@@ -27,9 +27,19 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, href }: 
       <>
         <UnstyledButton component={Link} href={href} className={classes.control}>
           <Group justify="space-between" gap={0}>
-            <Box style={{ display: 'flex', alignItems: 'center' }}>
-              <ThemeIcon variant="default" size={'md'}>
-                <Icon style={{ width: rem(18), height: rem(18) }} />
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <ThemeIcon variant="default" size="md">
+                <Icon
+                  style={{
+                    width: rem(18),
+                    height: rem(18),
+                  }}
+                />
               </ThemeIcon>
               <Box ml="md">{label}</Box>
             </Box>
@@ -43,9 +53,19 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, href }: 
     <>
       <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
         <Group justify="space-between" gap={0}>
-          <Box style={{ display: 'flex', alignItems: 'center' }}>
-            <ThemeIcon variant="default" size={'md'}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+          <Box
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <ThemeIcon variant="default" size="md">
+              <Icon
+                style={{
+                  width: rem(18),
+                  height: rem(18),
+                }}
+              />
             </ThemeIcon>
             <Box ml="md">{label} </Box>
           </Box>
