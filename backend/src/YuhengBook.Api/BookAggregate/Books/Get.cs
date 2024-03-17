@@ -13,7 +13,7 @@ public sealed record GetBookRequest
 }
 
 public class GetBook(IMediator mediator)
-    : Endpoint<GetBookRequest, Result<BookDetailDto>>
+    : Endpoint<GetBookRequest, BookDetailDto>
 {
     public override void Configure()
     {
@@ -27,6 +27,6 @@ public class GetBook(IMediator mediator)
         var result = await mediator.Send(new GetBookQuery(req.Id), ct);
 
         this.CheckResult(result);
-        await SendAsync(result, cancellation: ct);
+        await SendAsync(result.Value, cancellation: ct);
     }
 }

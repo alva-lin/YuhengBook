@@ -34,7 +34,7 @@ public sealed class ListBookValidator : Validator<ListBookRequest>
 }
 
 public class ListBook(IMediator mediator)
-    : Endpoint<ListBookRequest, Result<PaginatedList<BookInfoDto>>>
+    : Endpoint<ListBookRequest, PaginatedList<BookInfoDto>>
 {
     public override void Configure()
     {
@@ -48,6 +48,6 @@ public class ListBook(IMediator mediator)
         var result = await mediator.Send(new ListBookQuery(req.PageSize, req.Page, req.Keyword?.Trim()), ct);
 
         this.CheckResult(result);
-        await SendAsync(result, cancellation: ct);
+        await SendAsync(result.Value, cancellation: ct);
     }
 }

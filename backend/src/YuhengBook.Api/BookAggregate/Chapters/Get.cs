@@ -17,7 +17,7 @@ public sealed class GetChapterRequest
 }
 
 public class GetChapter(IMediator mediator)
-    : Endpoint<GetChapterRequest, Result<ChapterDetailDto>>
+    : Endpoint<GetChapterRequest, ChapterDetailDto>
 {
     public override void Configure()
     {
@@ -34,6 +34,6 @@ public class GetChapter(IMediator mediator)
         var result = await mediator.Send(new GetChapterQuery(req.BookId, req.Order), ct);
 
         this.CheckResult(result);
-        await SendAsync(result, cancellation: ct);
+        await SendAsync(result.Value, cancellation: ct);
     }
 }

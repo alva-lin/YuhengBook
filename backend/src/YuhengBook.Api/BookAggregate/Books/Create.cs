@@ -25,7 +25,7 @@ public sealed class CreateBookValidator : Validator<CreateBookRequest>
 }
 
 public class CreateBook(IMediator mediator)
-    : Endpoint<CreateBookRequest, Result<long>>
+    : Endpoint<CreateBookRequest, long>
 {
     public override void Configure()
     {
@@ -41,7 +41,7 @@ public class CreateBook(IMediator mediator)
         this.CheckResult(result);
         await SendCreatedAtAsync<GetBook>(
             new { Id = result.Value },
-            result,
+            result.Value,
             cancellation: ct);
     }
 }

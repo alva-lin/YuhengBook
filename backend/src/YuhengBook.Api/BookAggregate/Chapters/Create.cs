@@ -34,7 +34,7 @@ public sealed class CreateChapterValidator : Validator<CreateChapterRequest>
 }
 
 public class CreateChapter(IMediator mediator)
-    : Endpoint<CreateChapterRequest, Result<long>>
+    : Endpoint<CreateChapterRequest, long>
 {
     public override void Configure()
     {
@@ -48,6 +48,6 @@ public class CreateChapter(IMediator mediator)
         var result = await mediator.Send(new CreateChapterCommand(req.BookId, req.Title, req.Content, req.Order), ct);
 
         this.CheckResult(result);
-        await SendAsync(result, cancellation: ct);
+        await SendAsync(result.Value, cancellation: ct);
     }
 }
