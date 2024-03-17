@@ -1,11 +1,12 @@
 import '@mantine/core/styles.css';
-import React from 'react';
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
-import { theme } from '@/theme';
+import '@mantine/notifications/styles.css';
+import './globals.css';
+import { ColorSchemeScript } from '@mantine/core';
+import { MyMantineProvider, MyQueryClientProvider } from '@/lib/providers';
 
 export const metadata = {
-  title: 'Mantine Next.js template',
-  description: 'I am using Mantine with Next.js!',
+  title: '玉衡小说 - 后台管理',
+  description: '小说站点的后台管理系统',
 };
 
 export default function RootLayout({ children }: { children: any }) {
@@ -20,7 +21,9 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MyMantineProvider>
+          <MyQueryClientProvider>{children}</MyQueryClientProvider>
+        </MyMantineProvider>
       </body>
     </html>
   );
