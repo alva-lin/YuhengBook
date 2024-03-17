@@ -49,6 +49,8 @@ ConfigureMediatR();
 
 builder.Services.AddInfrastructureServices(builder.Configuration, microsoftLogger);
 
+builder.Services.AddCorsSetting(builder.Configuration);
+
 if (builder.Environment.IsDevelopment())
 {
     // Use a local test email server
@@ -76,6 +78,8 @@ else
     app.UseDefaultExceptionHandler(); // from FastEndpoints
     app.UseHsts();
 }
+
+app.UseCors();
 
 app.UseFastEndpoints(config =>
     {
