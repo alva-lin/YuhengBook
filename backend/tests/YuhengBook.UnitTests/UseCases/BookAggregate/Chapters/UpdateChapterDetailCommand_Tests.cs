@@ -7,12 +7,14 @@ namespace YuhengBook.UnitTests.UseCases.BookAggregate.Chapters;
 public class UpdateChapterDetailCommand_Tests : BasicTest
 {
     private readonly IRepository<Chapter>       _repos;
+    private readonly IRepository<ChapterDetail> _detailRepos;
     private readonly UpdateChapterDetailHandler _handler;
 
     public UpdateChapterDetailCommand_Tests()
     {
         _repos = Substitute.For<IRepository<Chapter>>();
-        _handler = new(_repos);
+        _detailRepos = Substitute.For<IRepository<ChapterDetail>>();
+        _handler = new(_repos, _detailRepos);
     }
 
     public static UpdateChapterDetailCommand CreateCommand(long? id = null)
@@ -38,7 +40,7 @@ public class UpdateChapterDetailCommand_Tests : BasicTest
         result.IsSuccess.Should().BeTrue();
         mockChapter.Detail.Content.Should().Be(cmd.Content);
 
-        await _repos.Received(1).UpdateAsync(Arg.Any<Chapter>(), Arg.Any<CancellationToken>());
+        await _detailRepos.Received(1).UpdateAsync(Arg.Any<ChapterDetail>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -54,6 +56,6 @@ public class UpdateChapterDetailCommand_Tests : BasicTest
         result.IsSuccess.Should().BeFalse();
         result.Status.Should().Be(ResultStatus.NotFound);
 
-        await _repos.DidNotReceive().UpdateAsync(Arg.Any<Chapter>(), Arg.Any<CancellationToken>());
+        await _detailRepos.DidNotReceive().UpdateAsync(Arg.Any<ChapterDetail>(), Arg.Any<CancellationToken>());
     }
 }

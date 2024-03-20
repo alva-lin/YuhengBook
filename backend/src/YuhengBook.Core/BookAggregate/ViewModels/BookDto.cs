@@ -54,4 +54,4 @@ public record ChapterInfoDto(int Order, string Title)
     public static ChapterInfoDto FromEntity(Chapter chapter) => new(chapter.Order, chapter.Title);
 }
 
-public record ChapterDetailDto(long BookId, int Order, string Title, string Content);
+public record ChapterDetailDto(long Id, long BookId, int Order, string Title, string Content);

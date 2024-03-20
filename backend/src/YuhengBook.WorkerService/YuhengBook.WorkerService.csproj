@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-YuhengBook.Service-00B4FD5E-BB4F-400C-B231-3B0B511BDE34</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.Extensions.Hosting"/>
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Enrichers.GlobalLogContext" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YuhengBook.Infrastructure\YuhengBook.Infrastructure.csproj"/>
+  </ItemGroup>
+</Project>

@@ -1,10 +1,11 @@
-﻿using YuhengBook.Core.BookAggregate;
+﻿using YuhengBook.Core.Attributes;
+using YuhengBook.Core.BookAggregate;
 
 namespace YuhengBook.UseCases.BookAggregate;
 
-public record CreateChapterCommand(long BookId, string Title, string Content, int? Order) : ICommand<Result<long>>;
+public record CreateChapterCommand(long BookId, string Title,[property: LogIgnore] string Content, int? Order) : ICommand<Result<long>>;
 
-public class CreateChapterHandler(IRepository<Book> repos) : ICommandHandler<CreateChapterCommand, Result<long>>
+public class CreateChapterHandler(IRepository<Book> repos, IRepository<Chapter> chapterRepos) : ICommandHandler<CreateChapterCommand, Result<long>>
 {
     public async Task<Result<long>> Handle(CreateChapterCommand req, CancellationToken cancellationToken)
     {
@@ -20,7 +21,7 @@ public class CreateChapterHandler(IRepository<Book> repos) : ICommandHandler<Cre
 
         var chapter = book.AddChapter(req.Title, req.Content, req.Order);
 
-        await repos.UpdateAsync(book, cancellationToken);
+        await chapterRepos.AddAsync(chapter, cancellationToken);
 
         return chapter.Id;
     }

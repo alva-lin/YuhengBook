@@ -29,9 +29,12 @@ public class ChapterDetail : EntityBase<long>, IAggregateRoot
 {
     private string _content = null!;
 
+    /// <summary>
+    ///     可能没有内容，但是不允许为空
+    /// </summary>
     public string Content
     {
         get => _content;
-        set => _content = Guard.Against.NullOrWhiteSpace(value);
+        set => _content = Guard.Against.Null(value);
     }
 }

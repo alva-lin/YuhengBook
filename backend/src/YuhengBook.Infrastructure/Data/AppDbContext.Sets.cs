@@ -3,7 +3,7 @@ using YuhengBook.Core.BookAggregate;
 
 namespace YuhengBook.Infrastructure.Data;
 
-public partial class AppDbContext
+public sealed partial class AppDbContext
 {
     public DbSet<Book> Books => Set<Book>();
 }

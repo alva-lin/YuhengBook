@@ -23,7 +23,11 @@ logger.Information("Starting web host");
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
+builder.Host.UseSerilog((_, config) =>
+    config
+       .Enrich.FromLogContext()
+       .ReadFrom.Configuration(builder.Configuration)
+);
 var microsoftLogger = new SerilogLoggerFactory(logger)
    .CreateLogger<Program>();
 
@@ -45,25 +49,17 @@ builder.Services.AddFastEndpoints()
         };
     });
 
-ConfigureMediatR();
-
-builder.Services.AddInfrastructureServices(builder.Configuration, microsoftLogger);
+builder.Services.AddInfrastructureServices(
+    builder.Configuration,
+    microsoftLogger,
+    builder.Environment.EnvironmentName
+);
 
 builder.Services.AddCorsSetting(builder.Configuration);
 
 if (builder.Environment.IsDevelopment())
 {
-    // Use a local test email server
-    // See: https://ardalis.com/configuring-a-local-test-email-server/
-    builder.Services.AddScoped<IEmailSender, MimeKitEmailSender>();
-
-    // Otherwise use this:
-    //builder.Services.AddScoped<IEmailSender, FakeEmailSender>();
     AddShowAllServicesSupport();
-}
-else
-{
-    builder.Services.AddScoped<IEmailSender, MimeKitEmailSender>();
 }
 
 var app = builder.Build();
@@ -115,18 +111,6 @@ static void SeedDatabase(WebApplication app)
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
     }
-}
-
-void ConfigureMediatR()
-{
-    var mediatRAssemblies = new[]
-    {
-        Assembly.GetAssembly(typeof(Book)),             // Core
-        Assembly.GetAssembly(typeof(CreateBookCommand)) // UseCases
-    };
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(mediatRAssemblies!));
-    builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-    builder.Services.AddScoped<IDomainEventDispatcher, MediatRDomainEventDispatcher>();
 }
 
 void AddShowAllServicesSupport()

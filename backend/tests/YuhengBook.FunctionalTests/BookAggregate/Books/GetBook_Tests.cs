@@ -21,9 +21,9 @@ public class GetBook_Tests(AppFixture app) : TestBase<AppFixture>
         var request = FakerRequest(id).Generate();
 
         var (resp, res) = await app.Client
-           .GETAsync<GetBook, GetBookRequest, Result<BookDetailDto>>(request);
+           .GETAsync<GetBook, GetBookRequest, BookDetailDto>(request);
 
         resp.StatusCode.Should().Be(HttpStatusCode.OK);
-        res.Value.Id.Should().Be(id);
+        res.Id.Should().Be(id);
     }
 }

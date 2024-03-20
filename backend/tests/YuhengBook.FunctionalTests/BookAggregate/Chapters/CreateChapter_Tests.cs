@@ -24,11 +24,11 @@ public class CreateChapter_Tests(AppFixture app) : TestBase<AppFixture>
         request ??= FakeRequest(bookId).Generate();
 
         var (resp, res) = await app.Client
-           .POSTAsync<CreateChapter, CreateChapterRequest, Result<long>>(request);
+           .POSTAsync<CreateChapter, CreateChapterRequest, long>(request);
 
         resp.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        return res.Value;
+        return res;
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class CreateChapter_Tests(AppFixture app) : TestBase<AppFixture>
         var request = FakeRequest(bookId).Generate();
 
         var (resp, _) = await app.Client
-           .POSTAsync<CreateChapter, CreateChapterRequest, Result<long>>(request);
+           .POSTAsync<CreateChapter, CreateChapterRequest, long>(request);
 
         resp.StatusCode.Should().Be(HttpStatusCode.OK);
     }

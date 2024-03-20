@@ -18,12 +18,12 @@ public class ListBook_Tests(AppFixture app) : TestBase<AppFixture>
            .RuleFor(x => x.Keyword, _ => null)
            .Generate();
         var (resp, res) = await app.Client
-           .GETAsync<ListBook, ListBookRequest, Result<PaginatedList<BookInfoDto>>>(request);
+           .GETAsync<ListBook, ListBookRequest, PaginatedList<BookInfoDto>>(request);
 
         var a = await resp.Content.ReadAsStringAsync();
         resp.StatusCode.Should().Be(HttpStatusCode.OK);
-        res.Value.Data.Should().NotBeEmpty();
-        res.Value.Data.Should().Contain(x => x.Id == id);
+        res.Data.Should().NotBeEmpty();
+        res.Data.Should().Contain(x => x.Id == id);
     }
 
     [Fact]

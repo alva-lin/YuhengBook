@@ -19,6 +19,7 @@ public class GetChapterQueryHandler(IReadRepository<Chapter> repos)
         }
 
         var result = new ChapterDetailDto(
+            chapter.Id,
             chapter.BookId,
             chapter.Order,
             chapter.Title,

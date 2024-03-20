@@ -20,11 +20,11 @@ public class CreateBook_Tests(AppFixture app) : TestBase<AppFixture>
         request ??= FakeRequest().Generate();
 
         var (resp, res) = await app.Client
-           .POSTAsync<CreateBook, CreateBookRequest, Result<long>>(request);
+           .POSTAsync<CreateBook, CreateBookRequest, long>(request);
 
         resp.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        return res.Value;
+        return res;
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class CreateBook_Tests(AppFixture app) : TestBase<AppFixture>
     {
         var request = FakeRequest().Generate();
 
-        var (resp, res) = await app.Client
-           .POSTAsync<CreateBook, CreateBookRequest, Result<long>>(request);
+        var (resp, _) = await app.Client
+           .POSTAsync<CreateBook, CreateBookRequest, long>(request);
 
         resp.StatusCode.Should().Be(HttpStatusCode.Created);
     }
