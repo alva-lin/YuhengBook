@@ -1,8 +1,12 @@
+'use client';
+
+import BookForm from '@/app/(main)/book/book-form';
+import { BookInfoDto } from '@/lib/models';
 import { ActionIcon, Checkbox, Table } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import cx from 'clsx';
 import { useState } from 'react';
-import { BookInfoDto } from '@/lib/models';
 import classes from './book-table.module.css';
 
 export function BookTable({ data }: { data: BookInfoDto[] }) {
@@ -14,18 +18,17 @@ export function BookTable({ data }: { data: BookInfoDto[] }) {
   const toggleAll = () =>
     setSelection((current) => (current.length === data.length ? [] : data.map((item) => item.id)));
 
-  const editItem = (id: number) => {
-    notifications.show({
-      color: 'green',
-      title: 'you clicked edit',
-      message: `id: ${id}`,
+  const editItem = (book: BookInfoDto) =>
+    modals.open({
+      title: '编辑小说',
+      children: <BookForm book={book} useModal />,
     });
-  };
 
-  const removeItem = (id: number) => {
+  const removeItem = () => {
     notifications.show({
-      title: 'you clicked remove',
-      message: `id: ${id}`,
+      title: '删除失败',
+      message: '暂不提供删除功能',
+      color: 'red',
     });
   };
 
@@ -47,7 +50,7 @@ export function BookTable({ data }: { data: BookInfoDto[] }) {
               size="lg"
               radius="sm"
               onClick={() => {
-                editItem(item.id);
+                editItem(item);
               }}
             >
               <span className="i-fluent-edit-24-regular" role="img" aria-hidden="true" />
@@ -58,7 +61,7 @@ export function BookTable({ data }: { data: BookInfoDto[] }) {
               size="lg"
               radius="sm"
               onClick={() => {
-                removeItem(item.id);
+                removeItem();
               }}
             >
               <span className="i-fluent-delete-24-regular" role="img" aria-hidden="true" />

@@ -7,7 +7,7 @@ export interface BaseResponse<T> {
 export interface PaginatedList<T> extends BaseResponse<T[]> {
   page: number;
   pageSize: number;
-  totalPages: number;
+  totalPage: number;
   totalCount: number;
 
   hasPreviousPage: boolean;
