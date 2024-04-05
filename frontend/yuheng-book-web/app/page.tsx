@@ -5,6 +5,7 @@ import { useDebouncedValue } from '@mantine/hooks';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
 import { Api } from '@/lib/api';
 
 export default function HomePage() {
@@ -13,17 +14,14 @@ export default function HomePage() {
   const [text, setText] = useState<string | undefined>();
   const [keyword] = useDebouncedValue(text, 300);
 
-  const {
-    data,
-    isFetching,
-    refetch,
-  } = useQuery({
+  const { data, isFetching, refetch } = useQuery({
     queryKey: ['books', keyword, pageSize, page],
-    queryFn: () => Api.Books.Book.getList({
-      page,
-      pageSize,
-      keyword,
-    }),
+    queryFn: () =>
+      Api.Books.Book.getList({
+        page,
+        pageSize,
+        keyword,
+      }),
     placeholderData: keepPreviousData,
     enabled: false,
   });
@@ -36,28 +34,22 @@ export default function HomePage() {
   }, [keyword, refetch]);
 
   const items = (data?.data ?? []).map((item) => (
-    <Card
-      shadow="md"
-      padding="md"
-      maw={800}
-      miw={500}
-      component={Link}
-      href={`/book/${item.id}`}
-    >
+    <Card shadow="md" padding="md" maw={800} miw={500} component={Link} href={`/book/${item.id}`}>
       <div className="flex justify-between mb-4">
         <Text fw={500} size="md">
           {item.name}
         </Text>
-        {item.lastChapter &&
+        {item.lastChapter && (
           <Text
             mt="xs"
             c="dimmed"
             size="sm"
             component={Link}
-            href={`/book/${item.id}/chapter/${item.lastChapter.order}`}>
+            href={`/book/${item.id}/chapter/${item.lastChapter.order}`}
+          >
             {item.lastChapter.title}
           </Text>
-        }
+        )}
       </div>
       <div>
         <Text lineClamp={3} c="dimmed">
@@ -80,19 +72,21 @@ export default function HomePage() {
             size="xl"
             placeholder="键入书名以搜索，宁可少字也不要多字..."
             value={text}
-            onChange={(e) => setText(e.target.value)} />
+            onChange={(e) => setText(e.target.value)}
+          />
           <LoadingOverlay visible={isFetching} loaderProps={{ children: '查询中...' }} />
-          {data && (<>
-            <Pagination
-              total={data.totalPage}
-              value={page}
-              onChange={setPage}
-              siblings={1}
-              withEdges />
-            <div className="flex flex-col gap-4 justify-center ">
-              {items}
-            </div>
-                    </>)}
+          {data && (
+            <>
+              <Pagination
+                total={data.totalPage}
+                value={page}
+                onChange={setPage}
+                siblings={1}
+                withEdges
+              />
+              <div className="flex flex-col gap-4 justify-center ">{items}</div>
+            </>
+          )}
         </div>
       </div>
     </>
