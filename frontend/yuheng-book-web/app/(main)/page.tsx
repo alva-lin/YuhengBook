@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { Api } from '@/lib/api';
+import { Header } from '@/components/Layouts/header';
 
 export default function HomePage() {
   const pageSize = 3;
@@ -62,14 +63,10 @@ export default function HomePage() {
   return (
     <>
       <div className="flex flex-col mt-32 items-center justify-center">
-        <div className="text-center font-black tracking-widest text-6xl flex justify-center gap-2">
-          <span className="i-fluent-book-24-regular" role="img" aria-hidden="true" />
-          <span>玉衡小说网</span>
-        </div>
         <div className="flex flex-col gap-4 mt-32 items-center">
           <TextInput
-            w={480}
-            size="xl"
+            w={{ base: 300, md: 480 }}
+            size="md"
             placeholder="键入书名以搜索，宁可少字也不要多字..."
             value={text}
             onChange={(e) => setText(e.target.value)}
