@@ -3,17 +3,17 @@
 import { useCallback } from 'react';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Card, LoadingOverlay, Pagination, Text } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 
-import { useSearchParams, useRouter } from 'next/navigation';
 import { Api } from '@/lib/api';
 
 export default function HomePage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
 
+  const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') ?? '1', 10);
   const pageSize = 10;
 
@@ -22,7 +22,7 @@ export default function HomePage() {
       const url = `/?page=${newPage}`;
       router.push(url);
     },
-    [searchParams, router]
+    [router]
   );
 
   const { data, isFetching } = useQuery({

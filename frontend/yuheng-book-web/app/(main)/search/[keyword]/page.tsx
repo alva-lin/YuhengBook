@@ -3,11 +3,11 @@
 import { useCallback } from 'react';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Card, LoadingOverlay, Pagination, Text } from '@mantine/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-import { useSearchParams, useRouter } from 'next/navigation';
 import { Api } from '@/lib/api';
 
 export default function Page({
@@ -19,11 +19,19 @@ export default function Page({
 }) {
   keyword = decodeURI(keyword);
 
-  const searchParams = useSearchParams();
   const router = useRouter();
 
+  const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') ?? '1', 10);
   const pageSize = 10;
+
+  const setPageAndNavigate = useCallback(
+    (newPage: number) => {
+      const url = `/search/${keyword}?page=${newPage}`;
+      router.push(url);
+    },
+    [router]
+  );
 
   const { data, isFetching } = useQuery({
     queryKey: ['books', keyword, pageSize, page],
@@ -35,14 +43,6 @@ export default function Page({
       }),
     placeholderData: keepPreviousData,
   });
-
-  const setPageAndNavigate = useCallback(
-    (newPage: number) => {
-      const url = `/search/${keyword}?page=${newPage}`;
-      router.push(url);
-    },
-    [searchParams, router]
-  );
 
   const items = (data?.data ?? []).map((item) => (
     <Card shadow="md" padding="md" maw={800} miw={300} component={Link} href={`/book/${item.id}`}>

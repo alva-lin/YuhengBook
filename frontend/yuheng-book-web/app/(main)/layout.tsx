@@ -1,10 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import { AppShell, rem } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 
 import { Footer } from '@/components/Layouts/footer';
 import { Header } from '@/components/Layouts/header';
+import Loading from '@/components/Loading';
 
 export default function Layout({ children }: { children: any }) {
   const pinned = useHeadroom({ fixedAt: 120 });
@@ -37,7 +40,7 @@ export default function Layout({ children }: { children: any }) {
             paddingRight: 'var(--mantine-spacing-md)',
           }}
         >
-          {children}
+          <Suspense fallback={<Loading />}>{children}</Suspense>
         </AppShell.Section>
         <Footer />
       </AppShell.Main>
