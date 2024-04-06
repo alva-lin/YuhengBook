@@ -1,19 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback } from 'react';
 
 import Link from 'next/link';
 
 import { Card, LoadingOverlay, Pagination, Text } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Api } from '@/lib/api';
 
 export default function HomePage() {
-  const pageSize = 10;
-  const [page, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const { data, isFetching, refetch } = useQuery({
+  const page = parseInt(searchParams.get('page') ?? '1', 10);
+  const pageSize = 10;
+
+  const setPageAndNavigate = useCallback(
+    (newPage: number) => {
+      const url = `/?page=${newPage}`;
+      router.push(url);
+    },
+    [searchParams, router]
+  );
+
+  const { data, isFetching } = useQuery({
     queryKey: ['books', pageSize, page],
     queryFn: () =>
       Api.Books.Book.getList({
@@ -55,9 +67,19 @@ export default function HomePage() {
           <LoadingOverlay visible={isFetching} loaderProps={{ children: '查询中...' }} />
           {data && (
             <>
-              <Pagination total={data.totalPage} value={page} onChange={setPage} siblings={1} />
+              <Pagination
+                total={data.totalPage}
+                value={page}
+                onChange={setPageAndNavigate}
+                siblings={1}
+              />
               <div className="flex flex-col gap-4 justify-center ">{items}</div>
-              <Pagination total={data.totalPage} value={page} onChange={setPage} siblings={1} />
+              <Pagination
+                total={data.totalPage}
+                value={page}
+                onChange={setPageAndNavigate}
+                siblings={1}
+              />
             </>
           )}
         </div>

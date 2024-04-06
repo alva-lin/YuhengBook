@@ -1,10 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useDebouncedValue } from '@mantine/hooks';
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { Card, Text, TextInput, LoadingOverlay, Pagination } from '@mantine/core';
+import { useCallback } from 'react';
+
 import Link from 'next/link';
+
+import { Card, LoadingOverlay, Pagination, Text } from '@mantine/core';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Api } from '@/lib/api';
 
 export default function Page({
@@ -16,10 +19,13 @@ export default function Page({
 }) {
   keyword = decodeURI(keyword);
 
-  const pageSize = 10;
-  const [page, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const { data, isFetching, refetch } = useQuery({
+  const page = parseInt(searchParams.get('page') ?? '1', 10);
+  const pageSize = 10;
+
+  const { data, isFetching } = useQuery({
     queryKey: ['books', keyword, pageSize, page],
     queryFn: () =>
       Api.Books.Book.getList({
@@ -28,11 +34,18 @@ export default function Page({
         keyword,
       }),
     placeholderData: keepPreviousData,
-    // enabled: false,
   });
 
+  const setPageAndNavigate = useCallback(
+    (newPage: number) => {
+      const url = `/search/${keyword}?page=${newPage}`;
+      router.push(url);
+    },
+    [searchParams, router]
+  );
+
   const items = (data?.data ?? []).map((item) => (
-    <Card shadow="md" padding="md" maw={800} miw={500} component={Link} href={`/book/${item.id}`}>
+    <Card shadow="md" padding="md" maw={800} miw={300} component={Link} href={`/book/${item.id}`}>
       <div className="flex justify-between mb-4">
         <Text fw={500} size="md">
           {item.name}
@@ -67,7 +80,7 @@ export default function Page({
               <Pagination
                 total={data.totalPage}
                 value={page}
-                onChange={setPage}
+                onChange={setPageAndNavigate}
                 siblings={1}
                 withEdges
               />
@@ -75,7 +88,7 @@ export default function Page({
               <Pagination
                 total={data.totalPage}
                 value={page}
-                onChange={setPage}
+                onChange={setPageAndNavigate}
                 siblings={1}
                 withEdges
               />

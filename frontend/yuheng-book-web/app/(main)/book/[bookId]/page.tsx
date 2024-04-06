@@ -1,13 +1,14 @@
 'use client';
 
+import { useCallback, useState } from 'react';
+
 import Link from 'next/link';
 
 import { Text } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 
-import { useState, useCallback } from 'react';
-import { Api } from '@/lib/api';
 import MyPagination from '@/components/Pagination';
+import { Api } from '@/lib/api';
 
 export default function Page({ params: { bookId } }: { params: { bookId: number } }) {
   const { data: book } = useQuery({
@@ -40,7 +41,7 @@ export default function Page({ params: { bookId } }: { params: { bookId: number 
           <>
             <div className="text-4xl text-center font-bold">{book.name}</div>
 
-            <MyPagination count={book.chapterCount} onChange={onPaginationChange} />
+            <MyPagination count={book.chapterCount} onChange={onPaginationChange} showOrder />
             <div className="w-full grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-4 justify-between">
               {chapters.map((item) => (
                 <div>
@@ -50,7 +51,7 @@ export default function Page({ params: { bookId } }: { params: { bookId: number 
                 </div>
               ))}
             </div>
-            <MyPagination count={book.chapterCount} onChange={onPaginationChange} />
+            <MyPagination count={book.chapterCount} onChange={onPaginationChange} showOrder />
           </>
         )}
       </div>

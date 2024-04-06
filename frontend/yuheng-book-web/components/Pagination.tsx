@@ -1,11 +1,13 @@
-import { Select, Button } from '@mantine/core';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { Button, Select } from '@mantine/core';
 import { useToggle } from '@mantine/hooks';
 
 export default function MyPagination(props: {
   count: number;
   page?: number;
   pageSize?: number;
+  showOrder?: boolean;
   orderBy?: 'asc' | 'desc';
   onChange?: (page: number, pageSize: number, orderBy: 'asc' | 'desc') => void;
 }) {
@@ -15,6 +17,10 @@ export default function MyPagination(props: {
   const totalPage = Math.ceil(props.count / pageSize);
 
   const [sort, toggleSort] = useToggle(['asc', 'desc'] as const);
+  const pageArray = Array.from({ length: totalPage }, (_, i) => ({
+    value: (i + 1).toString(),
+    label: `第 ${i + 1} 页`,
+  }));
 
   useEffect(() => {
     toggleSort(props.orderBy ?? 'asc');
@@ -29,18 +35,17 @@ export default function MyPagination(props: {
 
   return (
     <div className="flex justify-center items-center gap-2">
-      <Button variant="default" onClick={() => toggleSort()}>
-        {sort === 'asc' ? '正序' : '倒序'}
-      </Button>
+      {props.showOrder && (
+        <Button variant="default" onClick={() => toggleSort()}>
+          {sort === 'asc' ? '正序' : '倒序'}
+        </Button>
+      )}
       <Select
         w={120}
-        data={Array.from({ length: totalPage }, (_, i) => ({
-          value: (i + 1).toString(),
-          label: `第 ${i + 1} 页`,
-        }))}
+        data={pageArray}
         value={page.toString()}
         onChange={(value) => {
-          setPage(parseInt(value ?? '10'));
+          setPage(parseInt(value ?? '10', 10));
         }}
       />
       <Select
@@ -52,7 +57,7 @@ export default function MyPagination(props: {
         defaultValue="30"
         value={pageSize.toString()}
         onChange={(value) => {
-          setPageSize(parseInt(value ?? '10'));
+          setPageSize(parseInt(value ?? '10', 10));
         }}
       />
     </div>
