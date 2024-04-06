@@ -10,7 +10,7 @@ public sealed class SingleBookSpec : Specification<Book>, ISingleResultSpecifica
 
         if (includeChapters)
         {
-            Query.Include(b => b.Chapters);
+            Query.Include(b => b.Chapters.OrderBy(c => c.Order));
         }
     }
 }
