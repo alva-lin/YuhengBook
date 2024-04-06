@@ -1,10 +1,11 @@
 'use client';
 
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+
 import { Button } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
 import Article from '@/components/Article/Article';
 import { Api } from '@/lib/api';

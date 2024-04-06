@@ -1,13 +1,16 @@
 'use client';
 
-import { Group, Burger, TextInput, NavLink } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useEffect, useState, useCallback } from 'react';
+
+import { useParams, useRouter } from 'next/navigation';
+
+import { Burger, Group, NavLink, TextInput } from '@mantine/core';
+import { useDisclosure, getHotkeyHandler } from '@mantine/hooks';
 
 export function Header() {
   const [opened, { toggle }] = useDisclosure(false);
   const [text, setText] = useState<string | undefined>();
+  const router = useRouter();
 
   const params = useParams<{ keyword?: string }>();
   useEffect(() => {
@@ -16,6 +19,10 @@ export function Header() {
       setText(keyword);
     }
   }, [params]);
+
+  const onSearch = useCallback(() => {
+    router.push(`/search/${text}`);
+  }, [router, text]);
 
   return (
     <div className="m-auto h-full max-w-[1200px] flex justify-between items-center px-2">
@@ -36,6 +43,7 @@ export function Header() {
           placeholder="搜索书籍"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={getHotkeyHandler([['Enter', onSearch]])}
         />
       </Group>
     </div>

@@ -2,8 +2,9 @@
 
 import { AppShell, rem } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
-import { Header } from '@/components/Layouts/header';
+
 import { Footer } from '@/components/Layouts/footer';
+import { Header } from '@/components/Layouts/header';
 
 export default function Layout({ children }: { children: any }) {
   const pinned = useHeadroom({ fixedAt: 120 });
@@ -32,6 +33,8 @@ export default function Layout({ children }: { children: any }) {
             backgroundColor: 'var(--mantine-color-body)',
             boxShadow: 'var(--mantine-shadow-md)',
             // minHeight: 'calc(100vh - 400px)',
+            paddingLeft: 'var(--mantine-spacing-md)',
+            paddingRight: 'var(--mantine-spacing-md)',
           }}
         >
           {children}

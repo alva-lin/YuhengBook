@@ -1,8 +1,10 @@
 'use client';
 
-import { Text, Container } from '@mantine/core';
-import classes from './footer.module.css';
+import { Container, Text } from '@mantine/core';
+
 import { Logo } from '@/components/Logo/logo';
+
+import classes from './footer.module.css';
 
 const data = [
   {
