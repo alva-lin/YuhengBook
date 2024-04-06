@@ -33,7 +33,7 @@ public static class InfrastructureServiceExtensions
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 
-        AddServiceByEnvironment(services, config, logger, environmentName);
+        // AddServiceByEnvironment(services, config, logger, environmentName);
 
         logger.LogInformation("{Project} services registered", "Infrastructure");
 
@@ -59,24 +59,24 @@ public static class InfrastructureServiceExtensions
         return services;
     }
 
-    private static IServiceCollection AddServiceByEnvironment(
-        this IServiceCollection services,
-        ConfigurationManager config,
-        ILogger logger,
-        string environmentName
-    )
-    {
-        if (Environments.Development == environmentName)
-        {
-            logger.LogInformation("Development environment detected");
-            services.AddScoped<IEmailSender, FakeEmailSender>();
-        }
-        else
-        {
-            logger.LogInformation("Production environment detected");
-            services.AddScoped<IEmailSender, FakeEmailSender>();
-        }
-
-        return services;
-    }
+    // private static IServiceCollection AddServiceByEnvironment(
+    //     this IServiceCollection services,
+    //     ConfigurationManager config,
+    //     ILogger logger,
+    //     string environmentName
+    // )
+    // {
+    //     if (Environments.Development == environmentName)
+    //     {
+    //         logger.LogInformation("Development environment detected");
+    //         services.AddScoped<IEmailSender, FakeEmailSender>();
+    //     }
+    //     else
+    //     {
+    //         logger.LogInformation("Production environment detected");
+    //         services.AddScoped<IEmailSender, FakeEmailSender>();
+    //     }
+    //
+    //     return services;
+    // }
 }
